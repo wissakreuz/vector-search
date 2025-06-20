@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+      - "6334:6334"  # Port de gRPC, optionnel
+    volumes:
+      - ./qdrant_storage:/qdrant/storage
+    environment:
+      QDRANT__UI__ENABLE: "true"  # Active l'interface web
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - qdrant
